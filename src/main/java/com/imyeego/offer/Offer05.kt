@@ -14,14 +14,23 @@ var list = ArrayList<Int>()
 fun main() {
 
 
-    var node5 = ListNode(5, null)
-    var node4 = ListNode(4, node5)
-    var node3 = ListNode(3, node4)
-    var node2 = ListNode(2, node3)
-    var node1 = ListNode(1, node2)
+    val node5 = ListNode(5, null)
+    val node4 = ListNode(4, node5)
+    val node3 = ListNode(3, node4)
+    val node2 = ListNode(2, node3)
+    val node1 = ListNode(1, node2)
 
-    toToHeadWithIterative(node1)
+//    toToHeadWithIterative(node1)
+
+    tailToHeadWithRecursive(node1)
     list.forEach { print(it) }
+
+}
+
+fun tailToHeadWithRecursive(node: ListNode?) {
+    if (node == null) return
+    tailToHeadWithRecursive(node.next)
+    list.add(node.value)
 
 }
 
@@ -35,7 +44,7 @@ fun toToHeadWithIterative(node: ListNode?) {
         count ++
     }
 
-    for (i in 0..(count - 1)) {
+    for (i in 0 until count) {
         list.add(stack.pop())
     }
 

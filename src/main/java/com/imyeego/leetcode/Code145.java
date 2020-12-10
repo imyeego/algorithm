@@ -1,9 +1,9 @@
 package com.imyeego.leetcode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
+import com.sun.jmx.remote.internal.ArrayQueue;
+
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @authur : liuzhao
@@ -22,22 +22,43 @@ public class Code145 {
         TreeNode node2 = new TreeNode(3);
         TreeNode node3 = new TreeNode(5);
         TreeNode node4 = new TreeNode(4);
+        TreeNode node5 = new TreeNode(6);
+        TreeNode node6 = new TreeNode(7);
 
         root.right = node1;
         root.left = node4;
         node1.left = node2;
         node1.right = node3;
 
-        List<Integer> list = inorderTraversalIterative(root);
+        node4.left = node5;
+        node4.right = node6;
+
+        List<Integer> list = levelTraversalIterative(root);
         for (Integer i : list) {
-            System.out.println(i);
+            System.out.print(i);
         }
     }
 
-    public static List<Integer> postorderTraversalRecursive(TreeNode root) {
+    static List<Integer> preOrderWithRecursive(TreeNode root) {
         if (root == null) return list;
-        if (root.left != null) postorderTraversalRecursive(root.left);
-        if (root.right != null) postorderTraversalRecursive(root.right);
+        list.add(root.val);
+        preOrderWithRecursive(root.left);
+        preOrderWithRecursive(root.right);
+        return list;
+    }
+
+    static List<Integer> inOrderWithRecursive(TreeNode root) {
+        if (root == null) return list;
+        inOrderWithRecursive(root.left);
+        list.add(root.val);
+        inOrderWithRecursive(root.right);
+        return list;
+    }
+
+    public static List<Integer> postOrderTraversalRecursive(TreeNode root) {
+        if (root == null) return list;
+        if (root.left != null) postOrderTraversalRecursive(root.left);
+        if (root.right != null) postOrderTraversalRecursive(root.right);
 
         list.add(root.val);
         return list;
@@ -48,6 +69,8 @@ public class Code145 {
      * @param root
      * @return
      */
+
+    // TODO 额外需要一个栈或者反向的列表
     public static List<Integer> postorderTraversalIterative(TreeNode root) {
         List<Integer> list = new LinkedList<>();
         if (root == null) return list;
@@ -58,9 +81,12 @@ public class Code145 {
             list.add(0, temp.val);
             if (temp.left != null) stack.push(temp.left);
             if (temp.right != null) stack.push(temp.right);
+
         }
         return list;
     }
+
+
 
     /**
      * LeetCode#144
@@ -100,5 +126,19 @@ public class Code145 {
                 root = root.right;
             }
         }
+    }
+
+    static List<Integer> levelTraversalIterative(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedBlockingQueue<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            list.add(node.val);
+            if (node.left != null) queue.offer(node.left);
+            if (node.right != null) queue.offer(node.right);
+        }
+        return list;
+
     }
 }
