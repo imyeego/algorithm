@@ -33,6 +33,10 @@ public class Code145 {
         node4.left = node5;
         node4.right = node6;
 
+        int[] array = {1, 4, 2, 6, 7, 3, 5};
+
+        root = arrayToTree(array);
+
         List<Integer> list = levelTraversalIterative(root);
         for (Integer i : list) {
             System.out.print(i);
@@ -141,4 +145,43 @@ public class Code145 {
         return list;
 
     }
+
+    // 等于层次遍历
+    static List<Integer> treeToArray(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+
+
+        return list;
+    }
+
+
+    /**
+     * 根据数组构建二叉树
+     * @param array
+     * @return
+     */
+    static TreeNode arrayToTree(int[] array) {
+        if (array == null || array.length == 0) return null;
+        TreeNode root = new TreeNode(array[0]);
+        TreeNode node = root;
+        Queue<TreeNode> queue = new LinkedList<>();
+        for (int i = 1, j = 0; i < array.length; i += 2) {
+            TreeNode left = new TreeNode(array[2 * j + 1]);
+            queue.offer(left);
+            TreeNode right = new TreeNode(array[2 * j + 2]);
+            queue.offer(right);
+            node.left = left;
+            node.right = right;
+            node = queue.poll();
+            if (node.val == -1) {
+                j += 2;
+            } else {
+                j ++;
+            }
+        }
+
+        return root;
+    }
+
+
 }
